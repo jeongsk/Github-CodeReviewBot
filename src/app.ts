@@ -10,7 +10,7 @@ interface RepoContext {
   repo: string;
 }
 
-export default (app: Probot) => {
+export = (app: Probot) => {
   const getEnvironmentConfig = (): ChatbotConfig => ({
     apiKey: process.env.LAAS_API_KEY || "",
     project: process.env.LAAS_PROJECT || "WANTED_NBD",
@@ -40,7 +40,7 @@ export default (app: Probot) => {
 
   const getApiKey = async (
     context: Context,
-    repo: RepoContext
+    repo: RepoContext,
   ): Promise<string | null> => {
     const requestParams = {
       owner: repo.owner,
@@ -51,11 +51,11 @@ export default (app: Probot) => {
     const [variableResponse, secretResponse] = await Promise.all([
       context.octokit.request(
         "GET /repos/{owner}/{repo}/actions/variables/{name}",
-        requestParams
+        requestParams,
       ),
       context.octokit.request(
         "GET /repos/{owner}/{repo}/actions/secrets/{name}",
-        requestParams
+        requestParams,
       ),
     ]);
 
@@ -67,7 +67,7 @@ export default (app: Probot) => {
 
   const createErrorComment = async (
     context: Context,
-    repo: RepoContext
+    repo: RepoContext,
   ): Promise<void> => {
     try {
       await context.octokit.issues.createComment({
@@ -86,7 +86,7 @@ export default (app: Probot) => {
 
   const hasTargetLabel = (
     pullRequest: any,
-    targetLabel: string | undefined
+    targetLabel: string | undefined,
   ): boolean => {
     if (!targetLabel) return true;
     return pullRequest.labels.some((label: any) => label.name === targetLabel);
@@ -95,7 +95,7 @@ export default (app: Probot) => {
   const getChangedFiles = async (
     context: Context,
     repo: RepoContext,
-    pullRequest: any
+    pullRequest: any,
   ): Promise<any[]> => {
     const { data } = await context.octokit.repos.compareCommits({
       ...repo,
@@ -121,7 +121,7 @@ export default (app: Probot) => {
   const getFilesFromLastCommit = async (
     context: Context,
     repo: RepoContext,
-    commits: any[]
+    commits: any[],
   ): Promise<any[]> => {
     const { data } = await context.octokit.repos.compareCommits({
       ...repo,
@@ -137,7 +137,7 @@ export default (app: Probot) => {
     file: any,
     repo: RepoContext,
     pullRequest: any,
-    commitSha: string
+    commitSha: string,
   ): Promise<void> => {
     const patch = file.patch || "";
     if (file.status !== "modified" && file.status !== "added") return;
@@ -198,14 +198,14 @@ export default (app: Probot) => {
 
       await Promise.all(
         changedFiles.map((file) =>
-          reviewFile(context, chat, file, repo, pullRequest, lastCommitSha)
-        )
+          reviewFile(context, chat, file, repo, pullRequest, lastCommitSha),
+        ),
       );
 
       console.timeEnd("gpt cost");
       console.info("Successfully reviewed", pullRequest.html_url);
 
       return "success";
-    }
+    },
   );
 };
