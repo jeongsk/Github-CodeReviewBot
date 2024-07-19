@@ -1,7 +1,7 @@
+const core = require("@actions/core");
 const { run } = require("@probot/adapter-github-actions");
 const app = require("./app");
 
 run(app).catch((error) => {
-  console.error(error);
-  process.exit(1);
+  core.setFailed(`💥 Release drafter failed with error: ${error.message}`);
 });
