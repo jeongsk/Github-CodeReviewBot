@@ -1,4 +1,4 @@
-import { ApplicationFunction, Context, Probot } from "probot";
+import { Context, Probot } from "probot";
 import Chatbot, { ChatbotConfig } from "./chatbot";
 
 const MAX_PATCH_COUNT = process.env.MAX_PATCH_LENGTH
@@ -10,7 +10,7 @@ interface RepoContext {
   repo: string;
 }
 
-const app: ApplicationFunction = (probot: Probot) => {
+export default (app: Probot) => {
   const getEnvironmentConfig = (): ChatbotConfig => ({
     apiKey: process.env.LAAS_API_KEY || "",
     project: process.env.LAAS_PROJECT || "WANTED_NBD",
@@ -163,7 +163,7 @@ const app: ApplicationFunction = (probot: Probot) => {
     }
   };
 
-  probot.on(
+  app.on(
     ["pull_request.opened", "pull_request.synchronize"],
     async (context) => {
       console.time("gpt cost");
@@ -209,5 +209,3 @@ const app: ApplicationFunction = (probot: Probot) => {
     }
   );
 };
-
-export default app;
