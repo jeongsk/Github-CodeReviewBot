@@ -1,2 +1,2 @@
 declare const run: any;
-declare const robot: any;
+declare const app: any;
