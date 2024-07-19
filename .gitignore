@@ -1,0 +1,6 @@
+node_modules
+*.pem
+!mock-cert.pem
+.env
+coverage
+*.cache/**
