@@ -35,3 +35,6 @@ jobs:
 
 1. 새로운 PR을 생성하면 봇이 자동으로 코드 리뷰를 수행하며, 리뷰 결과는 PR 타임라인에 표시됩니다.
 2. `git push` 이후에 Pull request를 업데이트하면, 봇은 변경된 파일을 다시 검토합니다.
+
+### 샘플
+- https://github.com/jeongsk/sample-project/pull/1
