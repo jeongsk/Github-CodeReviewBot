@@ -49,11 +49,6 @@ export default class Chatbot {
         {
           messages: [],
           model: this.env.MODEL,
-          temperature: parseFloat(this.env.TEMPERATURE),
-          top_p: parseFloat(this.env.TOP_P),
-          max_tokens: this.env.MAX_TOKENS
-            ? parseInt(this.env.MAX_TOKENS)
-            : undefined,
         },
         {
           headers: {
@@ -63,6 +58,12 @@ export default class Chatbot {
           body: {
             hash: this.config.hash,
             params: { patch },
+            model: this.env.MODEL,
+            temperature: parseFloat(this.env.TEMPERATURE),
+            top_p: parseFloat(this.env.TOP_P),
+            max_tokens: this.env.MAX_TOKENS
+              ? parseInt(this.env.MAX_TOKENS)
+              : undefined,
           },
         }
       );
